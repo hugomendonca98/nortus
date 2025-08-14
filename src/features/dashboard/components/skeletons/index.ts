@@ -1,0 +1,6 @@
+export { KPISummarySkeleton } from './kpi-summary-skeleton'
+export { KPIEvolutionSkeleton } from './kpi-evolution-skeleton'
+export { ImpactMapSkeleton } from './impact-map-skeleton'
+export { ClientsTableSkeleton } from './clients-table-skeleton'
+export { ClientMapSkeleton } from './client-map-skeleton'
+export { LoadingDemo } from './loading-demo'

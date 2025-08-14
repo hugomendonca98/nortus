@@ -167,3 +167,7 @@
     var(--_g) 0 calc(var(--_d) + var(--y));
   mask-repeat: no-repeat;
 }
+
+.ol_bw {
+  filter: brightness(1.1) invert(100%) hue-rotate(180deg);
+}
