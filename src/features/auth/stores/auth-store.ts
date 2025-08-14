@@ -30,9 +30,10 @@ interface AuthStore extends AuthState {
   setLoading: (loading: boolean) => void
   setError: (error: string | null) => void
   initializeAuth: () => void
+  syncWithLocalStorage: () => void
 }
 
-export const useAuthStore = create<AuthStore>((set, _get) => ({
+export const useAuthStore = create<AuthStore>((set, get) => ({
   isAuthenticated: false,
   user: null,
   isLoading: false,
@@ -61,8 +62,9 @@ export const useAuthStore = create<AuthStore>((set, _get) => ({
         email: user.email,
         role: user.role,
       }
+      
+      // Salva no localStorage
       localStorage.setItem('user', JSON.stringify(userInfo))
-
       setCookie('auth_token', token, 7)
 
       set({
@@ -82,7 +84,6 @@ export const useAuthStore = create<AuthStore>((set, _get) => ({
 
   logout: () => {
     localStorage.removeItem('user')
-
     deleteCookie('auth_token')
 
     set({
@@ -114,9 +115,64 @@ export const useAuthStore = create<AuthStore>((set, _get) => ({
           error: null,
         })
       } catch {
+        // Se houver erro ao fazer parse, limpa os dados corrompidos
+        localStorage.removeItem('user')
+        deleteCookie('auth_token')
+        set({
+          isAuthenticated: false,
+          user: null,
+          isLoading: false,
+          error: null,
+        })
+      }
+    } else {
+      // Se não houver usuário ou token, garante que o estado esteja limpo
+      set({
+        isAuthenticated: false,
+        user: null,
+        isLoading: false,
+        error: null,
+      })
+    }
+  },
+
+  syncWithLocalStorage: () => {
+    // Função para sincronizar manualmente com localStorage
+    const savedUser = localStorage.getItem('user')
+    const token = getCookie('auth_token')
+    const currentState = get()
+
+    if (savedUser && token && !currentState.isAuthenticated) {
+      try {
+        const user = JSON.parse(savedUser)
+        set({
+          isAuthenticated: true,
+          user,
+          isLoading: false,
+          error: null,
+        })
+      } catch {
         localStorage.removeItem('user')
         deleteCookie('auth_token')
       }
+    } else if (!savedUser && currentState.isAuthenticated) {
+      // Se não há usuário no localStorage mas o store está autenticado, limpa o estado
+      set({
+        isAuthenticated: false,
+        user: null,
+        isLoading: false,
+        error: null,
+      })
     }
   },
 }))
+
+// Listener para mudanças no localStorage (opcional, para sincronização em tempo real)
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'user') {
+      const store = useAuthStore.getState()
+      store.syncWithLocalStorage()
+    }
+  })
+}
