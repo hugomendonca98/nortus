@@ -1,62 +1,43 @@
-import {
-  TicketsTable,
-  PageHeader,
-  TicketsStatsCards,
-  TicketFilters,
-  TicketData,
-} from '@/features/tickets'
+import { isAuth } from '@/features/auth/actions/is-auth'
+import { TicketsTable, PageHeader, TicketsStatsCards } from '@/features/tickets'
+import { fetchTickets } from '@/features/tickets/services/fetch-tickets'
 import { queryClient } from '@/lib/react-query'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+import { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 
-async function fetchTickets(filters: TicketFilters): Promise<TicketData> {
-  const params = new URLSearchParams()
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
-  if (filters.search) {
-    params.append('search', filters.search)
-  }
-  if (filters.status && filters.status !== 'Todos os status') {
-    params.append('status', filters.status)
-  }
-  if (filters.priority && filters.priority !== 'Todas as prioridades') {
-    params.append('priority', filters.priority)
-  }
-  if (filters.responsible && filters.responsible !== 'Todos os responsáveis') {
-    params.append('responsible', filters.responsible)
-  }
-  if (filters.page) {
-    params.append('page', filters.page.toString())
-  }
-  if (filters.limit) {
-    params.append('limit', filters.limit.toString())
-  }
+export const dynamic = 'force-dynamic'
 
-  const response = await fetch(`/api/tickets?${params.toString()}`)
-
-  if (!response.ok) {
-    throw new Error('Falha ao buscar tickets')
-  }
-
-  return response.json()
+export const metadata: Metadata = {
+  title: 'Nortus - Tickets',
+  description: 'Tickets',
 }
 
-export default async function TicketsPage(searchParams: {
-  page?: string
-  limit?: string
-  search?: string
-  status?: string
-  priority?: string
-  responsible?: string
+export default async function TicketsPage({
+  searchParams,
+}: {
+  searchParams: SearchParams
 }) {
+  const token = await isAuth()
+
+  if (!token) {
+    redirect('/')
+  }
+
+  const params = await searchParams
+
   await queryClient.prefetchQuery({
     queryKey: ['tickets'],
     queryFn: () =>
       fetchTickets({
-        page: searchParams.page ? parseInt(searchParams.page) : 1,
-        limit: searchParams.limit ? parseInt(searchParams.limit) : 5,
-        search: searchParams.search,
-        status: searchParams.status,
-        priority: searchParams.priority,
-        responsible: searchParams.responsible,
+        page: params.page ? parseInt(params.page as string) : 1,
+        limit: params.limit ? parseInt(params.limit as string) : 5,
+        search: params.search as string,
+        status: params.status as string,
+        priority: params.priority as string,
+        responsible: params.responsible as string,
       }),
   })
   const dehydratedState = dehydrate(queryClient)

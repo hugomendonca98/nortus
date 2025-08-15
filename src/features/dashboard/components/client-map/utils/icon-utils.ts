@@ -8,8 +8,7 @@ const getLucideIconSvg = (iconType: string, color = '#ffffff'): string => {
     case 'house':
       return `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M10.8164 5.49435C10.9305 5.22975 10.8819 4.90137 10.6272 4.67846L7.6975 2.1148C7.63955 2.0641 7.5806 2.01103 7.52045 1.95689C7.08835 1.56795 6.5962 1.125 5.99985 1.125C5.4035 1.125 4.91136 1.56794 4.47923 1.95689C4.4191 2.01102 4.36012 2.0641 4.30219 2.11479L1.37245 4.67846C1.11771 4.90137 1.06915 5.22975 1.18331 5.49435C1.27169 5.69925 1.45296 5.859 1.68375 5.91775C1.78739 5.94415 1.83921 5.95735 1.86025 5.9843C1.88129 6.01125 1.88144 6.05445 1.88175 6.1409C1.88323 6.5507 1.88646 7.46055 1.88646 7.5696C1.88645 8.2423 1.88644 8.7881 1.94903 9.2181C2.01457 9.6684 2.15532 10.0456 2.47628 10.342C2.793 10.6345 3.18883 10.7593 3.66156 10.818C4.12099 10.875 4.70661 10.875 5.44 10.875H6.55965C7.29305 10.875 7.8787 10.875 8.3381 10.818C8.81085 10.7593 9.2067 10.6345 9.5234 10.342C9.84435 10.0456 9.9851 9.6684 10.0506 9.2181C10.1132 8.7881 10.1132 8.2423 10.1132 7.5696C10.1132 7.46055 10.1165 6.5507 10.118 6.1409C10.1183 6.05445 10.1184 6.01125 10.1395 5.9843C10.1604 5.9573 10.2123 5.94415 10.316 5.91775C10.5467 5.859 10.728 5.69925 10.8164 5.49435ZM6 7.375C5.6548 7.375 5.375 7.6548 5.375 8C5.375 8.3452 5.6548 8.625 6 8.625H6.0045C6.34965 8.625 6.6295 8.3452 6.6295 8C6.6295 7.6548 6.34965 7.375 6.0045 7.375H6Z" fill="white"/>
-</svg>
-`
+</svg>`
     case 'car':
       return `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
   <path d="M10.9979 9.64796C10.9967 10.4775 10.9905 10.5239 10.8596 10.6814C10.8225 10.7261 10.7362 10.7879 10.6677 10.8188C10.5452 10.8742 10.531 10.875 9.73602 10.875C8.95852 10.875 8.92487 10.8731 8.82452 10.8235C8.76727 10.7951 8.68877 10.7413 8.65012 10.704C8.51817 10.5763 8.49902 10.4944 8.49902 10.0572C8.49902 9.97411 8.49902 9.93256 8.52227 9.90471C8.52572 9.90051 8.52952 9.89666 8.53362 9.89311C8.56107 9.86941 8.60287 9.86866 8.68657 9.86721C9.15887 9.85881 9.38622 9.84161 9.60882 9.80631C9.69667 9.79236 9.78312 9.77581 9.87552 9.75806L9.88622 9.75601C10.2221 9.69161 10.5386 9.60216 10.8099 9.48031C10.8485 9.46301 10.8678 9.45436 10.8794 9.45216C10.9342 9.44186 10.982 9.47281 10.9951 9.52701C10.9979 9.53856 10.9979 9.55791 10.9979 9.59666L10.9979 9.64796Z" fill="white"/>
@@ -33,6 +32,35 @@ const getLucideIconSvg = (iconType: string, color = '#ffffff'): string => {
     </clipPath>
   </defs>
 </svg>`
+    case 'map-pin':
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+        <circle cx="12" cy="10" r="3"/>
+      </svg>`
+    case 'hospital':
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+        <path d="M12 5l-3 3m0 0l3 3m-3-3h6"/>
+      </svg>`
+    case 'plane':
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 2c-2 0-4 0-5.5 1.5L10 7 1.8 5.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 2.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2Z"/>
+      </svg>`
+    case 'graduation-cap':
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+      </svg>`
+    case 'landmark':
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/>
+        <path d="M6 12H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>
+        <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/>
+        <path d="M10 6h4"/>
+        <path d="M10 10h4"/>
+        <path d="M10 14h4"/>
+        <path d="M10 18h4"/>
+      </svg>`
     default:
       return `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="${color}" stroke="${color}" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/></svg>`
   }

@@ -4,26 +4,6 @@ import { create } from 'zustand'
 import { AuthState, LoginFormData } from '../types/auth'
 import { setCookie, getCookie, deleteCookie } from '@/lib/cookies'
 
-// Usuários fake para demonstração
-const FAKE_USERS = [
-  {
-    id: '1',
-    username: 'admin',
-    password: 'admin123',
-    name: 'Administrador',
-    email: 'admin@example.com',
-    role: 'admin',
-  },
-  {
-    id: '2',
-    username: 'user',
-    password: 'user123',
-    name: 'Usuário Comum',
-    email: 'user@example.com',
-    role: 'user',
-  },
-]
-
 interface AuthStore extends AuthState {
   login: (data: LoginFormData) => Promise<void>
   logout: () => void
@@ -39,33 +19,42 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   isLoading: false,
   error: null,
 
-  login: async ({ email, password }: LoginFormData) => {
+  login: async ({ email }: LoginFormData) => {
     set({ isLoading: true, error: null })
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      const user = FAKE_USERS.find(
-        (u) => u.email === email && u.password === password,
+      // Faz requisição para o mock API
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/login.json`,
+        {
+          method: 'GET',
+        },
       )
 
-      if (!user) {
-        throw new Error('Credenciais inválidas')
+      if (!response.ok) {
+        throw new Error('Erro na requisição para o servidor')
       }
 
-      const token = `fake_token_${user.id}_${Date.now()}`
+      const data = await response.json()
 
+      if (!data.data || !data.data.accessToken) {
+        throw new Error('Resposta inválida do servidor')
+      }
+
+      const { accessToken, username } = data.data
+
+      // Cria objeto do usuário com os dados da resposta
       const userInfo = {
-        id: user.id,
-        username: user.username,
-        name: user.name,
-        email: user.email,
-        role: user.role,
+        id: 'user_001', // ID padrão já que não vem na resposta
+        username: username || 'Assistente Colaborador',
+        name: username || 'Assistente Colaborador',
+        email, // Mantém o email do formulário
+        role: 'customer', // Role padrão baseado na resposta
       }
-      
+
       // Salva no localStorage
       localStorage.setItem('user', JSON.stringify(userInfo))
-      setCookie('auth_token', token, 7)
+      setCookie('auth_token', accessToken, 7)
 
       set({
         isAuthenticated: true,
@@ -76,7 +65,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     } catch (error) {
       set({
         isLoading: false,
-        error: 'Credenciais inválidas. Tente novamente.',
+        error: 'Erro ao fazer login. Tente novamente.',
       })
       throw error
     }

@@ -68,10 +68,8 @@ export function CreateTicketModal({ onTicketCreated }: CreateTicketModalProps) {
     try {
       const ticketData: CreateTicketData = {
         priority: data.priority,
-        client: {
-          name: data.clientName,
-          email: data.clientEmail,
-        },
+        client: data.clientName,
+        email: data.clientEmail,
         subject: data.subject,
         responsible: data.responsible,
       }

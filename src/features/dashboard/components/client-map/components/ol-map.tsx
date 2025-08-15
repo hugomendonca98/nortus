@@ -32,7 +32,7 @@ export function OlMap({ customerData }: OlMapProps) {
       source: vectorSource,
     })
 
-    // Create the map
+    // Create the map - usar coordenadas do Recife como padrão
     const map = new Map({
       target: mapRef.current,
       layers: [
@@ -42,8 +42,8 @@ export function OlMap({ customerData }: OlMapProps) {
         vectorLayer,
       ],
       view: new View({
-        center: fromLonLat([-46.6333, -23.5505]), // São Paulo coordinates
-        zoom: 13,
+        center: fromLonLat([-34.8811, -8.0539]), // Coordenadas do Recife da API
+        zoom: 12,
       }),
       controls: [],
     })

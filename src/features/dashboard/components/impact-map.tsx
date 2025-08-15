@@ -17,12 +17,13 @@ export function ImpactMap() {
     return <ImpactMapSkeleton />
   }
 
-  const { chartSeries, chartLabels } = data?.impactMap || {
-    chartSeries: [],
-    chartLabels: [],
-  }
-  const chartLabelNames = chartLabels.map((item) => item.name)
-  const chartLabelColors = chartLabels.map((item) => item.color)
+  // Mapear os dados da nova API para o formato esperado pelo gráfico
+  const segments = data?.segments || []
+  const chartSeries = segments.map((segment) => segment.valor)
+  const chartLabels = segments.map((segment) => segment.nome)
+
+  // Cores para os segmentos
+  const colors = ['#37b5cc', '#43d2cb', '#ff6b6b', '#4ecdc4', '#45b7d1']
 
   const chartOptions = {
     chart: {
@@ -32,7 +33,7 @@ export function ImpactMap() {
         show: false,
       },
     },
-    colors: chartLabelColors,
+    colors,
     dataLabels: {
       enabled: false,
     },
@@ -88,7 +89,7 @@ export function ImpactMap() {
                 options={
                   {
                     ...chartOptions,
-                    labels: chartLabelNames,
+                    labels: chartLabels,
                   } as ApexOptions
                 }
                 series={chartSeries}
@@ -99,17 +100,17 @@ export function ImpactMap() {
             </div>
           </div>
           <div className="flex flex-wrap justify-center gap-2">
-            {chartLabels.map((item) => (
+            {segments.map((segment, index) => (
               <div
-                key={item.name}
+                key={segment.nome}
                 className="bg-[#ffffff0d] text-white border border-[#ffffff1a] p-2 px-4 rounded-full flex items-center gap-2"
               >
                 <Badge
                   variant="outline"
                   className="text-white border-none rounded-full p-1"
-                  style={{ backgroundColor: item.color }}
+                  style={{ backgroundColor: colors[index % colors.length] }}
                 ></Badge>
-                {item.name}
+                {segment.nome}
               </div>
             ))}
           </div>

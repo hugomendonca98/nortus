@@ -1,67 +1,73 @@
 export interface DashboardData {
-  kpiEvolution: {
+  kpisTrend: {
     labels: string[]
-    data: number[]
-    currentMetric: string
-    kpiData: Record<
-      string,
-      {
-        name: string
-        data: number[]
-        color: string
-      }
-    >
+    arpuTrend: {
+      name: string
+      data: number[]
+    }
+    conversionTrend: {
+      name: string
+      data: number[]
+    }
+    churnTrend: {
+      name: string
+      data: number[]
+    }
+    retentionTrend: {
+      name: string
+      data: number[]
+    }
   }
-  kpiSummary: Array<{
-    name: string
-    value: string
-    change: string
-    changePercentage: number
-    trend: 'up' | 'down'
-    color: string
+  kpisResume: {
+    arpu: {
+      valor: number
+      variacao: number
+    }
+    conversion: {
+      valor: number
+      variacao: number
+    }
+    retention: {
+      valor: number
+      variacao: number
+    }
+    churn: {
+      valor: number
+      variacao: number
+    }
+  }
+  segments: Array<{
+    nome: string
+    valor: number
   }>
-  clientMap: {
-    locations: string[]
-    types: string[]
-    clients: Array<{
-      id: number
+  activeClients: {
+    filters: {
+      status: string[]
+      secureType: string[]
+      locations: string[]
+    }
+    data: Array<{
+      id: string
       name: string
       email: string
-      type: string
-      monthlyValue: number
+      secureType: string
+      monthValue: number
       status: string
-      renewal: string
-      region: string
-      lat: number
-      lng: number
-    }>
-    customerData: Array<{
-      id: number
-      name: string
-      type: string
-      location: [number, number]
-      color: string
-      icon: string
-      region: string
-    }>
-    customerTypes: Array<{
-      value: string
-      label: string
-    }>
-    mapLocations: Array<{
-      value: string
-      label: string
+      renewalDate: string
+      location: string
     }>
   }
-  impactMap: {
-    segments: Array<{
+  mapData: {
+    center: [number, number]
+    zoom: number
+    locations: Array<{
+      id: string
       name: string
-      value: number
-      color: string
-    }>
-    chartSeries: number[]
-    chartLabels: Array<{
-      name: string
+      description: string
+      coordinates: [number, number]
+      category: string
+      address: string
+      icon: string
       color: string
     }>
   }

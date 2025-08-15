@@ -29,21 +29,16 @@ export function ClientsTable() {
     defaultValue: '',
   })
   const [status, setStatus] = useQueryState('status', {
-    defaultValue: 'Todos os status',
+    defaultValue: 'Todos',
   })
   const [type, setType] = useQueryState('type', {
-    defaultValue: 'Todos os tipos',
+    defaultValue: 'Todos',
   })
   const [location, setLocation] = useQueryState('location', {
-    defaultValue: 'Todos os locais',
+    defaultValue: 'Todos',
   })
 
-  const { data, isLoading } = useDashboardData({
-    search: search || undefined,
-    status: status !== 'Todos os status' ? status : undefined,
-    type: type !== 'Todos os tipos' ? type : undefined,
-    location: location !== 'Todos os locais' ? location : undefined,
-  })
+  const { data, isLoading } = useDashboardData()
 
   const handleSearchChange = useCallback(
     (value: string) => {
@@ -56,49 +51,59 @@ export function ClientsTable() {
     return <ClientsTableSkeleton />
   }
 
+  // Filtrar clientes baseado nos filtros selecionados
+  const filteredClients =
+    data?.activeClients.data.filter((client) => {
+      const matchesSearch =
+        !search ||
+        client.name.toLowerCase().includes(search.toLowerCase()) ||
+        client.email.toLowerCase().includes(search.toLowerCase())
+
+      const matchesStatus = status === 'Todos' || client.status === status
+      const matchesType = type === 'Todos' || client.secureType === type
+      const matchesLocation =
+        location === 'Todos' || client.location === location
+
+      return matchesSearch && matchesStatus && matchesType && matchesLocation
+    }) || []
+
   return (
     <Card className="col-span-3 bg-[#171d30] border-slate-700">
       <CardHeader>
-        <CardTitle className="text-xl text-white">Clientes ativos</CardTitle>
+        <CardTitle className="text-white text-xl mb-4">
+          Clientes Ativos
+        </CardTitle>
         <div className="flex items-center space-x-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <Input
               placeholder="Buscar por nome ou email..."
-              className="pl-10 bg-[#0B1125] border-none text-white placeholder:text-white rounded-full"
               value={search || ''}
               onChange={(e) => handleSearchChange(e.target.value)}
+              className="pl-10 bg-[#393e4e] border-slate-600 text-white placeholder:text-gray-400"
             />
           </div>
 
           <Select value={status} onValueChange={setStatus}>
-            <SelectTrigger className="w-40 bg-[#0B1125] border-none text-white rounded-full">
+            <SelectTrigger className="w-40 bg-[#393e4e] border-slate-600 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-[#0B1125] border-slate-600">
-              <SelectItem value="Todos os status" className="text-white">
-                Todos os status
-              </SelectItem>
-              <SelectItem value="Ativo" className="text-white">
-                Ativo
-              </SelectItem>
-              <SelectItem value="Pendente" className="text-white">
-                Pendente
-              </SelectItem>
+            <SelectContent className="bg-[#393e4e] border-slate-600 text-white">
+              {data?.activeClients.filters.status.map((statusOption) => (
+                <SelectItem key={statusOption} value={statusOption}>
+                  {statusOption}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
 
           <Select value={type} onValueChange={setType}>
-            <SelectTrigger className="w-40 bg-[#0B1125] border-none text-white rounded-full">
+            <SelectTrigger className="w-40 bg-[#393e4e] border-slate-600 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-[#0B1125] border-slate-600">
-              {data?.clientMap.types.map((typeOption) => (
-                <SelectItem
-                  key={typeOption}
-                  value={typeOption}
-                  className="text-white"
-                >
+            <SelectContent className="bg-[#393e4e] border-slate-600 text-white">
+              {data?.activeClients.filters.secureType.map((typeOption) => (
+                <SelectItem key={typeOption} value={typeOption}>
                   {typeOption}
                 </SelectItem>
               ))}
@@ -106,16 +111,12 @@ export function ClientsTable() {
           </Select>
 
           <Select value={location} onValueChange={setLocation}>
-            <SelectTrigger className="w-40 bg-[#0B1125] border-none text-white rounded-full">
+            <SelectTrigger className="w-40 bg-[#393e4e] border-slate-600 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-[#0B1125] border-slate-600">
-              {data?.clientMap.locations.map((locationOption) => (
-                <SelectItem
-                  key={locationOption}
-                  value={locationOption}
-                  className="text-white"
-                >
+            <SelectContent className="bg-[#393e4e] border-slate-600 text-white">
+              {data?.activeClients.filters.locations.map((locationOption) => (
+                <SelectItem key={locationOption} value={locationOption}>
                   {locationOption}
                 </SelectItem>
               ))}
@@ -136,7 +137,7 @@ export function ClientsTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.clientMap.clients.map((client) => (
+            {filteredClients.map((client) => (
               <TableRow
                 key={client.id}
                 className="border-slate-700 hover:bg-slate-700"
@@ -147,9 +148,11 @@ export function ClientsTable() {
                     <div className="text-sm text-slate-400">{client.email}</div>
                   </div>
                 </TableCell>
-                <TableCell className="text-slate-300">{client.type}</TableCell>
+                <TableCell className="text-slate-300">
+                  {client.secureType}
+                </TableCell>
                 <TableCell className="text-white font-medium">
-                  R$ {client.monthlyValue.toFixed(2).replace('.', ',')}
+                  R$ {client.monthValue.toFixed(2).replace('.', ',')}
                 </TableCell>
                 <TableCell>
                   <Badge
@@ -164,10 +167,10 @@ export function ClientsTable() {
                   </Badge>
                 </TableCell>
                 <TableCell className="text-slate-300">
-                  {client.renewal}
+                  {client.renewalDate}
                 </TableCell>
                 <TableCell className="text-slate-300">
-                  {client.region}
+                  {client.location}
                 </TableCell>
               </TableRow>
             ))}

@@ -5,61 +5,26 @@ import { KPISummary } from '@/features/dashboard/components/kpi-summary'
 import { ClientMap } from '@/features/dashboard/components'
 import { ImpactMap } from '@/features/dashboard/components/impact-map'
 import { ClientsTable } from '@/features/dashboard/components/clients-table'
-import { DashboardData } from '@/features/dashboard'
 import { Metadata } from 'next/types'
+import { isAuth } from '@/features/auth/actions/is-auth'
+import { redirect } from 'next/navigation'
+import { fetchDashboard } from '@/features/dashboard/services/fetch-dashboard'
 
 export const metadata: Metadata = {
   title: 'Nortus - Dashboard',
   description: 'Dashboard',
 }
 
-async function getDashboardData(
-  searchParams: {
-    search?: string
-    status?: string
-    type?: string
-    location?: string
-  } = {},
-): Promise<DashboardData> {
-  try {
-    const params = new URLSearchParams()
+export default async function DashboardPage() {
+  const token = await isAuth()
 
-    if (searchParams.search) params.append('search', searchParams.search)
-    if (searchParams.status) params.append('status', searchParams.status)
-    if (searchParams.type) params.append('type', searchParams.type)
-    if (searchParams.location) params.append('location', searchParams.location)
-
-    const queryString = params.toString()
-    const url = `${process.env.NEXT_PUBLIC_APP_URL}/api/dashboard${queryString ? `?${queryString}` : ''}`
-
-    const response = await fetch(url, {
-      cache: 'no-store',
-    })
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch dashboard data')
-    }
-
-    return response.json()
-  } catch (error) {
-    console.error('Erro ao carregar dados do dashboard:', error)
-    throw error
+  if (!token) {
+    redirect('/')
   }
-}
 
-export default async function DashboardPage({
-  searchParams,
-}: {
-  searchParams: {
-    search?: string
-    status?: string
-    type?: string
-    location?: string
-  }
-}) {
   await queryClient.prefetchQuery({
-    queryKey: ['dashboard', searchParams],
-    queryFn: () => getDashboardData(searchParams),
+    queryKey: ['dashboard'],
+    queryFn: () => fetchDashboard(),
   })
 
   const dehydratedState = dehydrate(queryClient)

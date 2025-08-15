@@ -79,15 +79,15 @@ export function TicketsStatsCards() {
         </CardContent>
       </Card>
 
-      {/* Card 3: Resolvidos hoje */}
+      {/* Card 3: Resolvidos */}
       <Card className="bg-[#171d30] border-slate-700">
         <CardContent className="p-6">
           <div className="flex justify-between items-start">
             <div className="flex flex-col justify-between gap-8 w-full">
-              <p className="text-slate-400 text-sm mb-1">Resolvidos hoje</p>
+              <p className="text-slate-400 text-sm mb-1">Resolvidos</p>
               <div className="flex items-center justify-between w-full">
                 <p className="text-white text-3xl font-bold">
-                  {data?.stats.resolvedToday}
+                  {data?.stats.solved}
                 </p>
                 <div className="text-[#43D2CB]">
                   <Image
@@ -111,7 +111,7 @@ export function TicketsStatsCards() {
               <p className="text-slate-400 text-sm mb-1">Tempo Médio</p>
               <div className="flex items-center justify-between w-full">
                 <p className="text-white text-3xl font-bold">
-                  {data?.stats.averageTime}
+                  {data?.stats.timeAverageHours}h
                 </p>
                 <div className="text-[#43D2CB]">
                   <Image
