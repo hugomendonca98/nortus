@@ -17,7 +17,28 @@ export function KPIEvolutionChart() {
     return <KPIEvolutionSkeleton />
   }
 
-  const kpiData = data?.kpiEvolution.kpiData || {}
+  // Mapear os dados da nova API para o formato esperado pelo gráfico
+  const kpiOptions = [
+    { key: 'ARPU', label: 'ARPU', data: data?.kpisTrend.arpuTrend.data || [] },
+    {
+      key: 'conversão',
+      label: 'Conversão',
+      data: data?.kpisTrend.conversionTrend.data || [],
+    },
+    {
+      key: 'retenção',
+      label: 'Retenção',
+      data: data?.kpisTrend.retentionTrend.data || [],
+    },
+    {
+      key: 'churn',
+      label: 'Churn',
+      data: data?.kpisTrend.churnTrend.data || [],
+    },
+  ]
+
+  const selectedKPIData =
+    kpiOptions.find((kpi) => kpi.key === selectedKPI) || kpiOptions[0]
 
   const chartOptions: ApexOptions = {
     chart: {
@@ -40,7 +61,7 @@ export function KPIEvolutionChart() {
     stroke: {
       curve: 'smooth',
       width: 2,
-      colors: [kpiData[selectedKPI].color],
+      colors: ['#37b5cc'],
     },
     fill: {
       type: 'gradient',
@@ -52,12 +73,12 @@ export function KPIEvolutionChart() {
         colorStops: [
           {
             offset: 0,
-            color: kpiData[selectedKPI].color,
+            color: '#37b5cc',
             opacity: 0.8,
           },
           {
             offset: 100,
-            color: kpiData[selectedKPI].color,
+            color: '#37b5cc',
             opacity: 0.1,
           },
         ],
@@ -78,67 +99,26 @@ export function KPIEvolutionChart() {
       },
     },
     xaxis: {
-      categories: [
-        'Jan',
-        'Fev',
-        'Mar',
-        'Abr',
-        'Mai',
-        'Jun',
-        'Jul',
-        'Ago',
-        'Set',
-        'Out',
-        'Nov',
-        'Dez',
-      ],
-      axisBorder: {
-        show: false,
-      },
-      axisTicks: {
-        show: false,
-      },
+      categories: data?.kpisTrend.labels || [],
       labels: {
         style: {
-          colors: '#9CA3AF',
-          fontSize: '12px',
+          colors: '#9ca3af',
         },
       },
     },
     yaxis: {
-      min: 0,
-      max: 380,
-      tickAmount: 4,
       labels: {
         style: {
-          colors: '#9CA3AF',
-          fontSize: '12px',
+          colors: '#9ca3af',
         },
-        formatter: (value) => Math.round(value).toString(),
       },
     },
-    tooltip: {
-      theme: 'dark',
-      style: {
-        fontSize: '12px',
-      },
-      y: {
-        formatter: (value) => `R$ ${value.toFixed(1)}k`,
-      },
-      marker: {
-        show: true,
-      },
-    },
-    legend: {
-      show: false,
-    },
-    colors: [kpiData[selectedKPI].color],
   }
 
   const series = [
     {
-      name: kpiData[selectedKPI].name,
-      data: kpiData[selectedKPI].data,
+      name: selectedKPIData.label,
+      data: selectedKPIData.data,
     },
   ]
 
@@ -152,17 +132,17 @@ export function KPIEvolutionChart() {
 
         {/* KPI Filter Buttons */}
         <div className="flex gap-2 bg-gray-600/30 rounded-full p-2">
-          {Object.keys(kpiData).map((kpi) => (
+          {kpiOptions.map((kpi) => (
             <Button
-              key={kpi}
-              onClick={() => setSelectedKPI(kpi)}
+              key={kpi.key}
+              onClick={() => setSelectedKPI(kpi.key)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                selectedKPI === kpi
+                selectedKPI === kpi.key
                   ? 'bg-[#37b5cc] text-white hover:bg-[#37b5cc]/80 shadow-md shadow-cyan-500/50'
                   : 'bg-[#393e4e] text-white hover:bg-[#393e4e]/80'
               }`}
             >
-              {kpi}
+              {kpi.label}
             </Button>
           ))}
         </div>

@@ -49,7 +49,7 @@ export function TicketsTable() {
   const [editingTicket, setEditingTicket] = useState<string | null>(null)
   const [editForm, setEditForm] = useState<{
     priority: 'Urgente' | 'Média' | 'Baixa'
-    status: 'Aberto' | 'Em andamento' | 'Fechado' | 'Cancelado'
+    status: 'Aberto' | 'Em andamento' | 'Fechado'
     responsible: string
   }>({
     priority: 'Média',
@@ -130,8 +130,6 @@ export function TicketsTable() {
         return 'bg-[#D2B843] text-black hover:bg-[#D2B843]'
       case 'Fechado':
         return 'bg-black text-white hover:bg-black'
-      case 'Cancelado':
-        return 'bg-red-600 text-white hover:bg-red-600'
       default:
         return 'bg-gray-400 text-black hover:bg-gray-400'
     }
@@ -286,10 +284,8 @@ export function TicketsTable() {
                 </TableCell>
                 <TableCell className="text-white">
                   <div>
-                    <div className="font-medium">{ticket.client.name}</div>
-                    <div className="text-sm text-slate-400">
-                      {ticket.client.email}
-                    </div>
+                    <div className="font-medium">{ticket.client}</div>
+                    <div className="text-sm text-slate-400">{ticket.email}</div>
                   </div>
                 </TableCell>
                 <TableCell className="text-slate-300 max-w-xs truncate">
@@ -300,11 +296,7 @@ export function TicketsTable() {
                     <Select
                       value={editForm.status}
                       onValueChange={(
-                        value:
-                          | 'Aberto'
-                          | 'Em andamento'
-                          | 'Fechado'
-                          | 'Cancelado',
+                        value: 'Aberto' | 'Em andamento' | 'Fechado',
                       ) => setEditForm((prev) => ({ ...prev, status: value }))}
                     >
                       <SelectTrigger className="w-28 bg-[#0B1125] border-slate-600 text-white">

@@ -1,12 +1,10 @@
 export interface Ticket {
   id: string
   priority: 'Urgente' | 'Média' | 'Baixa'
-  client: {
-    name: string
-    email: string
-  }
+  client: string
+  email: string
   subject: string
-  status: 'Aberto' | 'Em andamento' | 'Fechado' | 'Cancelado'
+  status: 'Aberto' | 'Em andamento' | 'Fechado'
   createdAt: string
   responsible: string
 }
@@ -32,8 +30,8 @@ export interface PaginationInfo {
 export interface TicketsStats {
   openTickets: number
   inProgress: number
-  resolvedToday: number
-  averageTime: string
+  solved: number
+  timeAverageHours: number
 }
 
 export interface TicketData {
@@ -47,21 +45,39 @@ export interface TicketData {
 
 export interface CreateTicketData {
   priority: 'Urgente' | 'Média' | 'Baixa'
-  client: {
-    name: string
-    email: string
-  }
+  client: string
+  email: string
   subject: string
   responsible: string
 }
 
 export interface UpdateTicketData {
   priority?: 'Urgente' | 'Média' | 'Baixa'
-  client?: {
-    name: string
-    email: string
-  }
+  client?: string
+  email?: string
   subject?: string
-  status?: 'Aberto' | 'Em andamento' | 'Fechado' | 'Cancelado'
+  status?: 'Aberto' | 'Em andamento' | 'Fechado'
   responsible?: string
+}
+
+// Interface para a API externa
+export interface ExternalTicketData {
+  resumo: {
+    open: number
+    inProgress: number
+    solved: number
+    timeAverageHours: number
+  }
+  status: string[]
+  priorities: string[]
+  tickets: Array<{
+    id: string
+    priority: string
+    client: string
+    email: string
+    subject: string
+    status: string
+    createdAt: string
+    responsible: string
+  }>
 }

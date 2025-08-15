@@ -14,7 +14,20 @@ export function ClientMap() {
     return <ClientMapSkeleton />
   }
 
-  const { customerTypes, mapLocations } = data.clientMap
+  // Mapear os dados da API externa para o formato esperado pelo mapa
+  const mapLocations =
+    data.mapData?.locations.map((location) => ({
+      value: location.category,
+      label:
+        location.category.charAt(0).toUpperCase() + location.category.slice(1),
+    })) || []
+
+  const customerTypes =
+    data.mapData?.locations.map((location) => ({
+      value: location.category,
+      label:
+        location.category.charAt(0).toUpperCase() + location.category.slice(1),
+    })) || []
 
   return (
     <div className="bg-[#171d30] rounded-2xl p-6 shadow-2xl w-full border border-slate-700">

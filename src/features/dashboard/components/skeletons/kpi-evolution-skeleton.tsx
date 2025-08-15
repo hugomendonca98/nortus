@@ -1,5 +1,3 @@
-import { Button } from '@/components/ui/button'
-
 export function KPIEvolutionSkeleton() {
   return (
     <div className="bg-[#171d30] rounded-2xl p-6 py-4 w-full xl:max-w-4xl border border-slate-700">

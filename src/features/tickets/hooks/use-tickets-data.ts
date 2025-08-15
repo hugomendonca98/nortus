@@ -8,37 +8,7 @@ import {
   CreateTicketData,
   UpdateTicketData,
 } from '../types/ticket-data'
-
-async function fetchTickets(filters: TicketFilters): Promise<TicketData> {
-  const params = new URLSearchParams()
-
-  if (filters.search) {
-    params.append('search', filters.search)
-  }
-  if (filters.status && filters.status !== 'Todos os status') {
-    params.append('status', filters.status)
-  }
-  if (filters.priority && filters.priority !== 'Todas as prioridades') {
-    params.append('priority', filters.priority)
-  }
-  if (filters.responsible && filters.responsible !== 'Todos os responsáveis') {
-    params.append('responsible', filters.responsible)
-  }
-  if (filters.page) {
-    params.append('page', filters.page.toString())
-  }
-  if (filters.limit) {
-    params.append('limit', filters.limit.toString())
-  }
-
-  const response = await fetch(`/api/tickets?${params.toString()}`)
-
-  if (!response.ok) {
-    throw new Error('Falha ao buscar tickets')
-  }
-
-  return response.json()
-}
+import { fetchTickets } from '../services/fetch-tickets'
 
 // Funções CRUD mockadas (simulando API real)
 async function createTicket(ticketData: CreateTicketData): Promise<Ticket> {
@@ -64,7 +34,8 @@ async function updateTicket(
   const updatedTicket: Ticket = {
     id,
     priority: ticketData.priority || 'Média',
-    client: ticketData.client || { name: '', email: '' },
+    client: ticketData.client || '',
+    email: ticketData.email || '',
     subject: ticketData.subject || '',
     status: ticketData.status || 'Aberto',
     createdAt: new Date().toLocaleDateString('pt-BR'),
