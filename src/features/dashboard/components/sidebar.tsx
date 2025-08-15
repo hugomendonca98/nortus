@@ -2,18 +2,43 @@
 
 import { useUser } from '@/features/auth/hooks/use-user'
 import { cn } from '@/lib/utils'
+import { usePathname } from 'next/navigation'
 import Image from 'next/image'
-
-const sidebarItems = [
-  { image: '/images/dashboard-icon.svg', label: 'Dashboard', active: true },
-  { image: '/images/tickets-icon.svg', label: 'Empresas' },
-  { image: '/images/chat-icon.svg', label: 'Chat' },
-  { image: '/images/user-icon.svg', label: 'Usuários' },
-  { image: '/images/calendar-icon.svg', label: 'Agenda' },
-]
+import Link from 'next/link'
 
 export function Sidebar() {
   const { userName } = useUser()
+
+  const pathname = usePathname()
+
+  const isActive = (url: string) => {
+    console.log(pathname, url)
+    return pathname === url
+  }
+
+  const sidebarItems = [
+    {
+      image: '/images/dashboard-icon.svg',
+      label: 'Dashboard',
+      url: '/dashboard',
+    },
+    {
+      image: '/images/tickets-icon.svg',
+      label: 'Empresas',
+      url: '/dashboard/tickets',
+    },
+    { image: '/images/chat-icon.svg', label: 'Chat', url: '/dashboard/chat' },
+    {
+      image: '/images/user-icon.svg',
+      label: 'Usuários',
+      url: '/dashboard/usuarios',
+    },
+    {
+      image: '/images/calendar-icon.svg',
+      label: 'Agenda',
+      url: '/dashboard/agenda',
+    },
+  ]
 
   return (
     <div className="flex h-screen w-32 flex-col bg-[#20273e] text-white rounded-tr-4xl shadow-2xl shadow-black z-20">
@@ -35,23 +60,25 @@ export function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 flex flex-col items-center justify-center space-y-4 p-4 pt-8 gap-4">
         {sidebarItems.map((item) => (
-          <div
-            key={item.label}
-            className={cn(
-              'flex h-12 w-12 items-center justify-center rounded-lg transition-colors cursor-pointer',
-              item.active
-                ? 'bg-[#1876d2] text-white shadow-md shadow-[#1876d2]/50'
-                : 'text-slate-300 bg-[#2b3248] hover:bg-slate-700 hover:text-white',
-            )}
-          >
-            <Image
-              src={item.image}
-              alt={item.label}
-              width={100}
-              height={100}
-              className="h-6 w-6"
-            />
-          </div>
+          <Link href={item.url} key={item.label}>
+            <div
+              key={item.label}
+              className={cn(
+                'flex h-12 w-12 items-center justify-center rounded-lg transition-colors cursor-pointer',
+                isActive(item.url)
+                  ? 'bg-[#1876d2] text-white shadow-md shadow-[#1876d2]/50'
+                  : 'text-slate-300 bg-[#2b3248] hover:bg-slate-700 hover:text-white',
+              )}
+            >
+              <Image
+                src={item.image}
+                alt={item.label}
+                width={100}
+                height={100}
+                className="h-6 w-6"
+              />
+            </div>
+          </Link>
         ))}
       </nav>
 
