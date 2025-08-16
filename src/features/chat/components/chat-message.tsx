@@ -1,4 +1,4 @@
-import { CheckCheckIcon, Lightbulb } from 'lucide-react'
+import { BotIcon, CheckCheckIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 import { Message } from '../types'
@@ -14,12 +14,13 @@ export function ChatMessage({ message }: ChatMessageProps) {
   if (isAISuggestion) {
     return (
       <div className="flex justify-end mb-2">
-        <div className="bg-gray-700 rounded-lg px-4 py-3 max-w-xs lg:max-w-md">
+        <div className="bg-gray-700 rounded-lg px-4 py-2 max-w-xs lg:max-w-md border-2 border-[#ffffff1a] rounded-br-none">
           <div className="flex items-center gap-2 mb-2">
-            <Lightbulb className="w-4 h-4 text-yellow-400" />
-            <span className="text-sm text-gray-300">Sugestão da IA</span>
+            <BotIcon className="w-4 h-4 text-white/50" />
+            <span className="text-sm text-white/50">Sugestão da IA</span>
           </div>
           <p className="text-sm text-white">{message.content}</p>
+          <div className="flex items-center gap-2 justify-end mt-2"></div>
         </div>
       </div>
     )
@@ -29,15 +30,13 @@ export function ChatMessage({ message }: ChatMessageProps) {
     <div className={cn('flex mb-4', isUser ? 'justify-start' : 'justify-end')}>
       <div
         className={cn(
-          'rounded-lg px-4 py-3 max-w-xs lg:max-w-md',
-          isUser ? 'bg-blue-600 text-white' : 'bg-gray-700 text-white',
+          'rounded-lg px-4 py-1 max-w-xs lg:max-w-md',
+          isUser
+            ? 'bg-[#1876D2] text-white rounded-bl-none'
+            : 'bg-gray-700 border-2 border-[#ffffff1a] text-white rounded-br-none',
         )}
       >
-        {!isUser && message.senderName && (
-          <div className="text-xs text-gray-300 mb-1 font-medium">
-            {message.senderName}
-          </div>
-        )}
+        <p className="text-sm text-white/50 mb-1">{message.senderName}</p>
         <p className="text-sm">{message.content}</p>
         <div className="flex items-center gap-2 justify-end mt-2">
           <span className="text-xs opacity-70">{message.timestamp}</span>

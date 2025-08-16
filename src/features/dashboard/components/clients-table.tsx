@@ -53,7 +53,7 @@ export function ClientsTable() {
 
   // Filtrar clientes baseado nos filtros selecionados
   const filteredClients =
-    data?.activeClients.data.filter((client) => {
+    data?.activeClients?.data?.filter((client) => {
       const matchesSearch =
         !search ||
         client.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -75,21 +75,21 @@ export function ClientsTable() {
         </CardTitle>
         <div className="flex items-center space-x-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white w-4 h-4" />
             <Input
               placeholder="Buscar por nome ou email..."
               value={search || ''}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="pl-10 bg-[#393e4e] border-slate-600 text-white placeholder:text-gray-400"
+              className="pl-10 bg-[#0B1125] border-slate-600 text-white placeholder:text-white"
             />
           </div>
 
           <Select value={status} onValueChange={setStatus}>
-            <SelectTrigger className="w-40 bg-[#393e4e] border-slate-600 text-white">
+            <SelectTrigger className="w-40 bg-[#0B1125] border-slate-600 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-[#393e4e] border-slate-600 text-white">
-              {data?.activeClients.filters.status.map((statusOption) => (
+            <SelectContent className="bg-[#0B1125] border-slate-600 text-white">
+              {data?.activeClients?.filters?.status.map((statusOption) => (
                 <SelectItem key={statusOption} value={statusOption}>
                   {statusOption}
                 </SelectItem>
@@ -98,11 +98,11 @@ export function ClientsTable() {
           </Select>
 
           <Select value={type} onValueChange={setType}>
-            <SelectTrigger className="w-40 bg-[#393e4e] border-slate-600 text-white">
+            <SelectTrigger className="w-40 bg-[#0B1125] border-slate-600 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-[#393e4e] border-slate-600 text-white">
-              {data?.activeClients.filters.secureType.map((typeOption) => (
+            <SelectContent className="bg-[#0B1125] border-slate-600 text-white">
+              {data?.activeClients?.filters?.secureType.map((typeOption) => (
                 <SelectItem key={typeOption} value={typeOption}>
                   {typeOption}
                 </SelectItem>
@@ -111,11 +111,11 @@ export function ClientsTable() {
           </Select>
 
           <Select value={location} onValueChange={setLocation}>
-            <SelectTrigger className="w-40 bg-[#393e4e] border-slate-600 text-white">
+            <SelectTrigger className="w-40 bg-[#0B1125] border-slate-600 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-[#393e4e] border-slate-600 text-white">
-              {data?.activeClients.filters.locations.map((locationOption) => (
+            <SelectContent className="bg-[#0B1125] border-slate-600 text-white">
+              {data?.activeClients?.filters?.locations.map((locationOption) => (
                 <SelectItem key={locationOption} value={locationOption}>
                   {locationOption}
                 </SelectItem>
@@ -127,7 +127,7 @@ export function ClientsTable() {
       <CardContent>
         <Table>
           <TableHeader>
-            <TableRow className="border-slate-700">
+            <TableRow className="border-slate-700 hover:bg-transparent">
               <TableHead className="text-white">Cliente</TableHead>
               <TableHead className="text-white">Tipo</TableHead>
               <TableHead className="text-white">Valor Mensal</TableHead>

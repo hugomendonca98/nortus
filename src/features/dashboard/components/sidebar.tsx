@@ -12,7 +12,6 @@ export function Sidebar() {
   const pathname = usePathname()
 
   const isActive = (url: string) => {
-    console.log(pathname, url)
     return pathname === url
   }
 
@@ -31,12 +30,12 @@ export function Sidebar() {
     {
       image: '/images/user-icon.svg',
       label: 'Usuários',
-      url: '/dashboard/usuarios',
+      url: '#',
     },
     {
       image: '/images/calendar-icon.svg',
       label: 'Agenda',
-      url: '/dashboard/agenda',
+      url: '#',
     },
   ]
 

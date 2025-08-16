@@ -7,7 +7,7 @@ export interface ExternalChatMessage {
 }
 
 export interface ConversationAnalysis {
-  inights: {
+  insights: {
     title: string
     insights: Array<{
       id: string

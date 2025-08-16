@@ -88,7 +88,7 @@ export function CreateTicketModal({ onTicketCreated }: CreateTicketModalProps) {
         description: 'O ticket foi criado e já está na sua lista.',
         action: {
           label: <XIcon className="w-4 h-4" />,
-          onClick: () => console.log('Undo'),
+          onClick: () => {},
         },
       })
 

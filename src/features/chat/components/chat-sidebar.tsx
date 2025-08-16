@@ -72,7 +72,7 @@ export function ChatSidebar({
       <div className="flex items-center justify-between mb-6">
         <button
           onClick={onToggleMinimize}
-          className="text-gray-400 hover:text-white transition-colors flex items-center gap-2"
+          className="text-gray-400 hover:text-white transition-colors flex items-center gap-2 cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
           Minimizar

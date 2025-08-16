@@ -22,8 +22,8 @@ export function ChatAreaSkeleton() {
         {/* Mensagem do usuário */}
         <div className="flex justify-end">
           <div className="max-w-xs lg:max-w-md">
-            <div className="bg-blue-600 rounded-2xl rounded-br-md p-3">
-              <div className="h-4 bg-blue-500 rounded animate-pulse w-48"></div>
+            <div className="bg-slate-700 rounded-2xl rounded-br-md p-3">
+              <div className="h-4 bg-slate-600 rounded animate-pulse w-48"></div>
             </div>
             <div className="text-right mt-1">
               <div className="h-3 bg-slate-600 rounded animate-pulse w-16 ml-auto"></div>

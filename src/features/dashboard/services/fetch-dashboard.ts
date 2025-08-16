@@ -12,7 +12,7 @@ export async function fetchDashboard(): Promise<DashboardData> {
       throw new Error('Failed to fetch dashboard data')
     }
 
-    const dashboardData = await dashboardResponse.json()
+    const dashboardData: DashboardData = await dashboardResponse.json()
 
     // Buscar dados do mapa
     const mapResponse = await api('/map.json', {

@@ -13,27 +13,26 @@ export function KPIEvolutionChart() {
   const { data, isLoading } = useDashboardData()
   const [selectedKPI, setSelectedKPI] = useState<string>('ARPU')
 
-  if (!data && !isLoading) {
+  if (!data && isLoading) {
     return <KPIEvolutionSkeleton />
   }
 
-  // Mapear os dados da nova API para o formato esperado pelo gráfico
   const kpiOptions = [
-    { key: 'ARPU', label: 'ARPU', data: data?.kpisTrend.arpuTrend.data || [] },
+    { key: 'ARPU', label: 'ARPU', data: data?.kpisTrend?.arpuTrend.data || [] },
     {
       key: 'conversão',
       label: 'Conversão',
-      data: data?.kpisTrend.conversionTrend.data || [],
+      data: data?.kpisTrend?.conversionTrend?.data || [],
     },
     {
       key: 'retenção',
       label: 'Retenção',
-      data: data?.kpisTrend.retentionTrend.data || [],
+      data: data?.kpisTrend?.retentionTrend.data || [],
     },
     {
       key: 'churn',
       label: 'Churn',
-      data: data?.kpisTrend.churnTrend.data || [],
+      data: data?.kpisTrend?.churnTrend?.data || [],
     },
   ]
 
@@ -99,7 +98,7 @@ export function KPIEvolutionChart() {
       },
     },
     xaxis: {
-      categories: data?.kpisTrend.labels || [],
+      categories: data?.kpisTrend?.labels || [],
       labels: {
         style: {
           colors: '#9ca3af',
