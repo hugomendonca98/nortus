@@ -1,7 +1,7 @@
 import { External360ViewData, SidebarData } from '../types'
 import { api } from '@/lib/services/api'
 
-export async function fetch360View(): Promise<SidebarData> {
+export async function fetch360View(): Promise<SidebarData | undefined> {
   try {
     const response = await api('/360-view.json', {
       cache: 'no-store',
@@ -84,92 +84,6 @@ export async function fetch360View(): Promise<SidebarData> {
     }
   } catch (error) {
     console.error('Erro ao buscar dados da visão 360:', error)
-
-    // Retornar dados padrão em caso de erro
-    return {
-      client: {
-        name: 'Ricardo Leite',
-        type: 'Cliente Intermediário',
-      },
-      products: [
-        {
-          id: '1',
-          name: 'Seguro automóvel',
-          price: 'R$ 185,90/mês',
-          status: 'active',
-        },
-        {
-          id: '2',
-          name: 'Seguro Residencial',
-          price: 'R$ 89,90/mês',
-          status: 'active',
-        },
-        {
-          id: '3',
-          name: 'Seguro Viagem',
-          price: 'R$ 230,00/mês',
-          status: 'inactive',
-        },
-      ],
-      profileTags: ['Família com filhos', 'Profissional liberal', 'Investidor'],
-      appActions: [
-        {
-          id: '1',
-          action: 'Consultou página de planos de saúde',
-          timeAgo: '45 min atrás',
-          details: 'Tempo na página 3min e 42 seg',
-        },
-        {
-          id: '2',
-          action: 'Iniciou simulação de seguro auto',
-          timeAgo: '1 dia atrás',
-        },
-      ],
-      smartClassification: {
-        segment: 'Premium',
-        lifeTimeValue: 24580.0,
-        churnProbability: 11,
-        expansionScore: {
-          level: 'Alto',
-          value: 90,
-        },
-        retentionScore: {
-          level: 'Médio',
-          value: 60,
-        },
-      },
-      aiSuggestions: {
-        nbo: {
-          offer: 'Seguro de vida individual com cobertura por doenças graves',
-          value: 127.5,
-          conversionProbability: 78,
-          reasonsWhy: [
-            'Cliente tem perfil compatível com produto',
-            'Idade em faixa de preço competitivo',
-            'Cliente já demonstrou preocupação com família',
-          ],
-        },
-        nba: {
-          offer: 'Plano odontológico familiar com cobertura nacional',
-          value: 89.9,
-          conversionProbability: 65,
-          reasonsWhy: [
-            'Cliente possui filhos e demonstrou interesse',
-            'Não possui produto similar no portfólio',
-            'Cobertura ampla e preço competitivo',
-          ],
-        },
-        nbx: {
-          offer: 'Seguro de equipamentos eletrônicos para viagens',
-          value: 45.0,
-          conversionProbability: 52,
-          reasonsWhy: [
-            'Cliente viaja com frequência',
-            'Produto de baixo custo com alta utilidade',
-            'Complementa pacote de proteção pessoal',
-          ],
-        },
-      },
-    }
+    throw error
   }
 }

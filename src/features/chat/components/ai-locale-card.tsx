@@ -15,8 +15,8 @@ export function AiLocaleCard({ locales }: AiLocaleCardProps) {
 
         <div className="flex justify-between items-center gap-2 mt-4">
           <div className="flex flex-col gap-2">
-            {locales.map((locale) => (
-              <div className="flex items-center gap-2" key={locale.title}>
+            {locales.map((locale, index) => (
+              <div className="flex items-center gap-2" key={index}>
                 <span className="w-2 h-2 bg-[#22ABDD] rounded-full shadow shadow-[#22ABDD]"></span>
                 <div>
                   <p className="text-gray-400 text-sm">{locale.title}</p>

@@ -23,7 +23,7 @@ export function ImpactMap() {
   const chartLabels = segments.map((segment) => segment.nome)
 
   // Cores para os segmentos
-  const colors = ['#37b5cc', '#43d2cb', '#ff6b6b', '#4ecdc4', '#45b7d1']
+  const colors = ['#006eff', '#75dfff', '#0882a7', '#00449e', '#53a9fd']
 
   const chartOptions = {
     chart: {
